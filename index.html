@@ -1,0 +1,46 @@
+<html>
+
+  <style >
+    form {
+    background-color: burlywood;
+    text-align: center;
+  }
+
+  input {
+    font-size: 30px;
+    color: green;
+    width: 550px;
+  }
+  </style>
+  <body>
+    <form onsubmit="saveToLocalStorage(event)">
+      <label>Choose Expense Amount</label>
+      <br />
+      <input id="chooseExpenseAmount" , type="text" , name="chooseExpenseAmount" required />
+      <br />
+      <label>Choose Discription</label>
+      <br />
+      <input id="chooseDiscription" ,id="chooseCategory" , type="text" , name="chooseDiscription" required />
+      <br />
+      <label>Choose Category</label>
+      <br />
+      <input list="chooseCategory" , name="chooseCategory" required />
+      <datalist id="chooseCategory" required>
+        <option value="car">
+        <option value="phone">
+        <option value="earphone">
+        <option value="accesories">
+        <option value="laptop">
+      </datalist>
+      <br />
+      <button>Add Item</button>
+      <br />
+    </form>
+    <ul id='listOfItems'></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <script src="script.js"></script>
+
+    </body>
+    
+
+</html>
