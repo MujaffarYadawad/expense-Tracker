@@ -2,32 +2,34 @@ async function saveToLocalStorage(event){
         event.preventDefault();
       
         const chooseExpenseAmount=event.target.chooseExpenseAmount.value;
-        const chooseDiscription=event.target.chooseDiscription.value;
+        const chooseDescription=event.target.chooseDescription.value;
         const chooseCategory=event.target.chooseCategory.value;   
 
-        const obj={
+        const obj = {
           chooseExpenseAmount,
-          chooseDiscription,
-          chooseCategory,
+          chooseDescription,
+          chooseCategory
         }
           
           try{
-             let res = await axios.post("https://crudcrud.com/api/fd4114886b3242c5b06436ba1bc65487/AppointemntData", obj)
+            
+             const res = await axios.post('http://localhost:5000/expense/add-expense', obj)
              
-            showNewItemsOnScreen(res.data)
-            console.log(res)
+             showNewItemsOnScreen(res.data)
+          
          
-         } catch (error) {
+         } 
+         catch (error) {
           console.log(error)
          }
-        }
+   }
      
 
       window.addEventListener("DOMContentLoaded", async() => {
       
        try {
-         let res = await axios.get("https://crudcrud.com/api/fd4114886b3242c5b06436ba1bc65487/AppointemntData")
-           for (let i = 0; i < res.data.length; i++) {
+         const res = await axios.get('http://localhost:5000/expense/get-expense')
+           for (var i = 0; i < res.data.length; i++) {
            showNewItemsOnScreen(res.data[i])
            }
        } catch (error) {
@@ -35,21 +37,22 @@ async function saveToLocalStorage(event){
        }
       
     })
+  
 
       function showNewItemsOnScreen(item) {
         
 
           document.getElementById('chooseExpenseAmount').value = '';
-          document.getElementById('chooseDiscription').value = '';
+          document.getElementById('chooseDescription').value = '';
           document.getElementById('chooseCategory').value = '';
 
           
 
 
           const parentNode = document.getElementById('listOfItems');
-          const childHTML = `<li id=${item._id}> ${item.chooseExpenseAmount} - ${item.chooseDiscription} - ${item.chooseCategory}
-                                        <button onclick=deleteItem('${item._id}')> Delete Item </button>
-                                            <button onclick=editItemDetails('${item.chooseExpenseAmount}','${item.chooseDiscription}','${item.chooseCategory}','${item._id}')> Edit Item </button>
+          const childHTML = `<li id=${item.id}> ${item.chooseExpenseAmount} - ${item.chooseDescription} - ${item.chooseCategory}
+                                        <button onclick=deleteItem('${item.id}')> Delete Item </button>
+                                            <button onclick=editItemDetails('${item.chooseExpenseAmount}','${item.chooseDescription}','${item.chooseCategory}','${item.id}')> Edit Item </button>
                                      </li>`
 
           parentNode.innerHTML = parentNode.innerHTML + childHTML;
@@ -58,14 +61,13 @@ async function saveToLocalStorage(event){
 
      }
         // edit items
-        function editItemDetails(chooseExpenseAmount, chooseDiscription, chooseCategory, itemId) {
-           
-          
+        function editItemDetails(chooseExpenseAmount,chooseDescription,chooseCategory,itemId) {
+            
            document.getElementById('chooseExpenseAmount').value = chooseExpenseAmount;
-           document.getElementById('chooseDiscription').value = chooseDiscription;
+           document.getElementById('chooseDescription').value = chooseDescription;
            document.getElementById('chooseCategory').value = chooseCategory;
            
-            
+          
           deleteItem(itemId);
 
         }
@@ -75,12 +77,13 @@ async function saveToLocalStorage(event){
          
           try {
            
-           await axios.delete(`https://crudcrud.com/api/fd4114886b3242c5b06436ba1bc65487/AppointemntData/${itemId}`)
+          await axios.delete(`http://localhost:5000/expense/delete-expense/${itemId}`)
 
              removeItemsFromScreen(itemId)
             
           
-          } catch (error) {
+          } 
+          catch (error) {
             console.log(error)
           }  
 
